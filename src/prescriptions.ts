@@ -1,4 +1,4 @@
-import { principalCV, uintCV } from '@stacks/transactions';
+import { uintCV } from '@stacks/transactions';
 import type { StaxialConfig } from './config';
 import { callContract, extractValue } from './helpers';
 
@@ -50,14 +50,14 @@ export async function getPrescription(
 
   return {
     id: prescriptionId,
-    patient: value.patient,
-    hospital: value.hospital,
-    doctor: value.doctor,
-    issuedAt: value['issued-at'],
-    expiresAt: value['expires-at'],
-    diagnosis: value.diagnosis,
-    notes: value.notes || undefined,
-    status: value.status,
+    patient: value.patient as string,
+    hospital: value.hospital as string,
+    doctor: value.doctor as string,
+    issuedAt: value['issued-at'] as number,
+    expiresAt: value['expires-at'] as number,
+    diagnosis: value.diagnosis as string,
+    notes: (value.notes as string) || undefined,
+    status: value.status as string,
   };
 }
 
@@ -77,12 +77,12 @@ export async function getMedication(
   if (!value) return null;
 
   return {
-    name: value.name,
-    dosage: value.dosage,
-    frequency: value.frequency,
-    duration: value.duration,
-    quantity: value.quantity,
-    instructions: value.instructions || undefined,
+    name: value.name as string,
+    dosage: value.dosage as string,
+    frequency: value.frequency as string,
+    duration: value.duration as string,
+    quantity: value.quantity as number,
+    instructions: (value.instructions as string) || undefined,
   };
 }
 
@@ -102,13 +102,13 @@ export async function getPharmacy(
 
   return {
     id: pharmacyId,
-    owner: value.owner,
-    name: value.name,
-    licenseNumber: value['license-number'],
-    location: value.location,
-    verified: value.verified,
-    active: value.active,
-    registeredAt: value['registered-at'],
+    owner: value.owner as string,
+    name: value.name as string,
+    licenseNumber: value['license-number'] as string,
+    location: value.location as string,
+    verified: value.verified as boolean,
+    active: value.active as boolean,
+    registeredAt: value['registered-at'] as number,
   };
 }
 
@@ -122,5 +122,5 @@ export async function isPrescriptionValid(
     'is-prescription-valid',
     [uintCV(prescriptionId)]
   );
-  return response.value as boolean;
+  return (response.value as unknown as boolean) || false;
 }

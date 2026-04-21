@@ -1,6 +1,11 @@
 import { callReadOnlyFunction, cvToJSON, ClarityValue } from '@stacks/transactions';
 import type { StaxialConfig } from './config';
 
+interface ClarityResponse {
+  type: string;
+  value?: Record<string, unknown>;
+}
+
 /**
  * Helper to call read-only contract functions
  */
@@ -9,7 +14,7 @@ export async function callContract(
   contractName: string,
   functionName: string,
   functionArgs: ClarityValue[] = []
-): Promise<any> {
+): Promise<ClarityResponse> {
   const result = await callReadOnlyFunction({
     contractAddress: config.contractAddress,
     contractName,
@@ -20,15 +25,15 @@ export async function callContract(
   });
 
   const json = cvToJSON(result);
-  return json;
+  return json as ClarityResponse;
 }
 
 /**
  * Extract value from Clarity response, handling optional types
  */
-export function extractValue(response: any): any {
+export function extractValue(response: ClarityResponse): Record<string, unknown> | null {
   if (response.type === 'none' || !response.value) {
     return null;
   }
-  return response.value;
+  return response.value as Record<string, unknown>;
 }

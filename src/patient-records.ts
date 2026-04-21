@@ -33,7 +33,7 @@ export async function isPatientRegistered(
     'is-patient-registered',
     [principalCV(patient)]
   );
-  return response.value as boolean;
+  return (response.value as unknown as boolean) || false;
 }
 
 export async function getPatient(
@@ -51,8 +51,8 @@ export async function getPatient(
   if (!value) return null;
 
   return {
-    registered: value.registered,
-    registeredAt: value['registered-at'],
+    registered: value.registered as boolean,
+    registeredAt: value['registered-at'] as number,
   };
 }
 
@@ -72,12 +72,12 @@ export async function getMedicalRecord(
 
   return {
     id: recordId,
-    patient: value.patient,
-    hospital: value.hospital,
-    recordType: value['record-type'],
-    ipfsHash: value['ipfs-hash'],
-    timestamp: value.timestamp,
-    description: value.description,
+    patient: value.patient as string,
+    hospital: value.hospital as string,
+    recordType: value['record-type'] as string,
+    ipfsHash: value['ipfs-hash'] as string,
+    timestamp: value.timestamp as number,
+    description: value.description as string,
   };
 }
 
@@ -91,7 +91,8 @@ export async function getPatientRecordCount(
     'get-patient-record-count',
     [principalCV(patient)]
   );
-  return response.value.count as number;
+  const value = response.value as Record<string, unknown>;
+  return (value?.count as number) || 0;
 }
 
 export async function hasAccess(
@@ -105,5 +106,5 @@ export async function hasAccess(
     'has-access',
     [principalCV(patient), principalCV(hospital)]
   );
-  return response.value as boolean;
+  return (response.value as unknown as boolean) || false;
 }

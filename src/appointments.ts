@@ -32,16 +32,16 @@ export async function getAppointment(
 
   return {
     id: appointmentId,
-    patient: value.patient,
-    hospital: value.hospital,
-    doctor: value.doctor,
-    scheduledTime: value['scheduled-time'],
-    duration: value.duration,
-    fee: BigInt(value.fee),
-    platformFee: BigInt(value['platform-fee']),
-    status: value.status,
-    notes: value.notes || undefined,
-    createdAt: value['created-at'],
+    patient: value.patient as string,
+    hospital: value.hospital as string,
+    doctor: value.doctor as string,
+    scheduledTime: value['scheduled-time'] as number,
+    duration: value.duration as number,
+    fee: BigInt(value.fee as string | number),
+    platformFee: BigInt(value['platform-fee'] as string | number),
+    status: value.status as string,
+    notes: (value.notes as string) || undefined,
+    createdAt: value['created-at'] as number,
   };
 }
 
@@ -55,10 +55,11 @@ export async function getPatientAppointmentCount(
     'get-patient-appointment-count',
     [principalCV(patient)]
   );
-  return response.value.count as number;
+  const value = response.value as Record<string, unknown>;
+  return (value?.count as number) || 0;
 }
 
 export async function getPlatformFee(config: StaxialConfig): Promise<number> {
   const response = await callContract(config, 'appointments', 'get-platform-fee');
-  return response.value as number;
+  return (response.value as unknown as number) || 0;
 }

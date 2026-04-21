@@ -35,16 +35,16 @@ export async function getHospital(
 
   return {
     id: hospitalId,
-    owner: value.owner,
-    name: value.name,
-    licenseNumber: value['license-number'],
-    location: value.location,
-    verified: value.verified,
-    status: value.status,
-    stake: BigInt(value.stake),
-    rating: value.rating,
-    totalRatings: value['total-ratings'],
-    registeredAt: value['registered-at'],
+    owner: value.owner as string,
+    name: value.name as string,
+    licenseNumber: value['license-number'] as string,
+    location: value.location as string,
+    verified: value.verified as boolean,
+    status: value.status as string,
+    stake: BigInt(value.stake as string | number),
+    rating: value.rating as number,
+    totalRatings: value['total-ratings'] as number,
+    registeredAt: value['registered-at'] as number,
   };
 }
 
@@ -66,17 +66,17 @@ export async function getHospitalByPrincipal(
   if (!value) return null;
 
   return {
-    id: value.id,
-    owner: value.owner,
-    name: value.name,
-    licenseNumber: value['license-number'],
-    location: value.location,
-    verified: value.verified,
-    status: value.status,
-    stake: BigInt(value.stake),
-    rating: value.rating,
-    totalRatings: value['total-ratings'],
-    registeredAt: value['registered-at'],
+    id: value.id as number,
+    owner: value.owner as string,
+    name: value.name as string,
+    licenseNumber: value['license-number'] as string,
+    location: value.location as string,
+    verified: value.verified as boolean,
+    status: value.status as string,
+    stake: BigInt(value.stake as string | number),
+    rating: value.rating as number,
+    totalRatings: value['total-ratings'] as number,
+    registeredAt: value['registered-at'] as number,
   };
 }
 
@@ -85,7 +85,7 @@ export async function getHospitalByPrincipal(
  */
 export async function getMinStake(config: StaxialConfig): Promise<bigint> {
   const response = await callContract(config, 'hospital-registry', 'get-min-stake');
-  return BigInt(response.value);
+  return BigInt((response.value as unknown as string | number) || 0);
 }
 
 /**
@@ -101,7 +101,7 @@ export async function isHospitalVerified(
     'is-hospital-verified',
     [uintCV(hospitalId)]
   );
-  return response.value as boolean;
+  return (response.value as unknown as boolean) || false;
 }
 
 /**
@@ -119,7 +119,7 @@ export async function getHospitalSpecialty(
     [uintCV(hospitalId), uintCV(index)]
   );
 
-  return extractValue(response);
+  return extractValue(response) as string | null;
 }
 
 /**
@@ -136,7 +136,8 @@ export async function getHospitalSpecialtyCount(
     [uintCV(hospitalId)]
   );
 
-  return response.value.count as number;
+  const value = response.value as Record<string, unknown>;
+  return (value?.count as number) || 0;
 }
 
 /**

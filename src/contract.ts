@@ -1,4 +1,4 @@
-import { callReadOnlyFunction, cvToJSON } from '@stacks/transactions';
+import { callReadOnlyFunction, cvToJSON, ClarityValue } from '@stacks/transactions';
 import type { ResolvedStaxialConfig } from './config';
 
 /** Fetch the current Stacks block height from the API. */
@@ -40,7 +40,7 @@ export async function callReadOnly<T = unknown>(
       contractAddress: config.contractAddress,
       contractName: config.contractName,
       functionName,
-      functionArgs: functionArgs as any[],
+      functionArgs: functionArgs as ClarityValue[],
       senderAddress: config.contractAddress,
     });
 
