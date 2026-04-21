@@ -1,6 +1,6 @@
 {
   "name": "staxial-sdk",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "TypeScript SDK for interacting with Staxial Health contracts on the Stacks blockchain",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
