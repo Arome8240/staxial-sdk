@@ -1,7 +1,7 @@
 {
   "name": "staxial-sdk",
-  "version": "0.1.0",
-  "description": "TypeScript SDK for interacting with Staxial contracts on the Stacks blockchain",
+  "version": "0.2.0",
+  "description": "TypeScript SDK for interacting with Staxial Health contracts on the Stacks blockchain",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -12,7 +12,7 @@
       "require": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": ["dist", "README.md"],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -23,15 +23,31 @@
     "test:constants": "vitest run tests/constants.test.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src tests --ext .ts",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build && npm run lint"
   },
-  "keywords": ["stacks", "blockchain", "bitcoin", "stx", "sdk", "staxial"],
+  "keywords": [
+    "stacks",
+    "blockchain",
+    "bitcoin",
+    "stx",
+    "sdk",
+    "staxial",
+    "health",
+    "healthcare",
+    "medical",
+    "clarity",
+    "web3"
+  ],
   "author": "Staxial",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_USERNAME/staxial-sdk"
+    "url": "https://github.com/arome8240/staxial-sdk"
   },
+  "bugs": {
+    "url": "https://github.com/arome8240/staxial-sdk/issues"
+  },
+  "homepage": "https://github.com/arome8240/staxial-sdk#readme",
   "dependencies": {
     "@stacks/transactions": "^6.12.0"
   },
